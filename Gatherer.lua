@@ -1831,6 +1831,8 @@ function Gatherer_AddGatherToBase(gather, gatherType, gatherC, gatherZ, gatherX,
   -- this function was brought out into the global space and extended with the updateCount argument.
   -- The latter denotes whether the gather count should be incremented.
   -- Also it has started to return whether new node was found.
+  if (gatherC == nil  or gatherZ == nil) then return false; end
+	
   local continentName = Gatherer_GetContinentName(gatherC)
   local zoneName = Gatherer_GetZoneName(gatherC, gatherZ)
 	
