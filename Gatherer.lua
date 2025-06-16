@@ -1246,11 +1246,11 @@ function GatherMain_Draw()
               minSetSkillLevel > 0 and
               (minSetSkillLevel > Gather_SkillLevel[specificType] or
                   (SETTINGS.rareOre == 1 and
-                      Gather_SkillLevel[Gather_RareMatch[specificType]] and
+                      Gather_RareMatch[specificType] and Gather_SkillLevel[Gather_RareMatch[specificType]] and
                       Gather_SkillLevel[specificType] <
-                      Gather_SkillLevel[Gather_RareMatch[specificType]] and
+                      Gather_RareMatch[specificType] and Gather_SkillLevel[Gather_RareMatch[specificType]] and
                       minSetSkillLevel >
-                      Gather_SkillLevel[Gather_RareMatch[specificType]]))) then
+                      Gather_RareMatch[specificType] and Gather_SkillLevel[Gather_RareMatch[specificType]]))) then
             allowed = false;
           end
         end
@@ -1260,7 +1260,7 @@ function GatherMain_Draw()
                 (idx_count == 0) or SETTINGS.interested[gatherType] == nil or
                 (SETTINGS.interested[gatherType][specificType] == true or
                     (SETTINGS.rareOre == 1 and
-                        SETTINGS.interested[gatherType][Gather_RareMatch[specificType]])))) then
+                        Gather_RareMatch[specificType] and SETTINGS.interested[gatherType][Gather_RareMatch[specificType]])))) then
           for hPos, gatherInfo in gatherData do
             local convertedGatherType = "";
             local numGatherType, numGatherIcon;
@@ -1474,9 +1474,9 @@ function Gatherer_FindClosest(num, interested)
           minSetSkillLevel > 0 and
           (minSetSkillLevel > Gather_SkillLevel[specificType] or
               (SETTINGS.rareOre == 1 and
-                  Gather_SkillLevel[Gather_RareMatch[specificType]] and
+                  Gather_RareMatch[specificType] and Gather_SkillLevel[Gather_RareMatch[specificType]] and
                   minSetSkillLevel >
-                  Gather_SkillLevel[Gather_RareMatch[specificType]]))) then
+                  Gather_RareMatch[specificType] and Gather_SkillLevel[Gather_RareMatch[specificType]]))) then
         allowed = false;
       end
     end
@@ -1486,7 +1486,7 @@ function Gatherer_FindClosest(num, interested)
             SETTINGS.interested[gatherType] == nil or
             (SETTINGS.interested[gatherType][specificType] == true or
                 (SETTINGS.rareOre == 1 and
-                    SETTINGS.interested[gatherType][Gather_RareMatch[specificType]])))) then
+                    Gather_RareMatch[specificType] and SETTINGS.interested[gatherType][Gather_RareMatch[specificType]])))) then
       local maxNum = 100;
       local gatherInfo;
 
@@ -1833,7 +1833,8 @@ function Gatherer_AddGatherToBase(gather, gatherType, gatherC, gatherZ, gatherX,
   -- Also it has started to return whether new node was found.
   local continentName = Gatherer_GetContinentName(gatherC)
   local zoneName = Gatherer_GetZoneName(gatherC, gatherZ)
-	
+  if (not continentName) or (not zoneName) then return false; end
+
   if (not GatherItems[continentName]) then GatherItems[continentName] = {}; end
   if (not GatherItems[continentName][zoneName]) then
     GatherItems[continentName][zoneName] = {};
@@ -2476,4 +2477,3 @@ function Gatherer_ToggleBuggedItem()
 
   GatherMain_Draw();
 end
-
